@@ -1,5 +1,6 @@
 import { Slot } from "expo-router";
 import { SafeAreaView } from "react-native";
+import { NativeWindStyleSheet } from "nativewind";
 import {
   Inter_400Regular,
   Inter_500Medium,
@@ -20,6 +21,10 @@ export default function Layout() {
   if (!fontsLoaded) {
     return <Loading />;
   }
+
+  NativeWindStyleSheet.setOutput({
+    default: "native",
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-slate-900">
