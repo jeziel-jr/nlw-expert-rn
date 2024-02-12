@@ -22,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0f172a"
-      }
+      },
+      "package": "com.jezieljunior.nlwexpertrn"
     },
     "web": {
       "bundler": "metro",
@@ -35,6 +36,20 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2491d9dd-69f4-4af0-9019-839aa7e3804c"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2491d9dd-69f4-4af0-9019-839aa7e3804c"
     }
   }
 }
