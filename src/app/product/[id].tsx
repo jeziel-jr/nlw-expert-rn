@@ -6,18 +6,34 @@ import { formatCurrency } from "@/utils/functions/format-currency";
 import { Feather } from "@expo/vector-icons";
 import { Redirect, useLocalSearchParams, useNavigation } from "expo-router";
 import { Image, Text, View } from "react-native";
+import colors from "tailwindcss/colors";
 
 export default function Product() {
   const cartStore = useCartStore();
   const navigation = useNavigation();
   const { id } = useLocalSearchParams();
 
+  const route = navigation.getState()?.routes;
+  const prevRoute = route[route.length - 2];
+
+  const backTitle =
+    prevRoute?.name === "cart" ? "Voltar ao carrinho" : "Voltar ao cardápio";
+  const backHref = prevRoute?.name === "cart" ? "/cart" : "/";
+
   const product = PRODUCTS.find((item) => item.id === id);
+  const currentQuantity = cartStore.products.find(
+    (item) => item.id === id
+  )?.quantity;
 
   function handleAddToCard() {
     if (product) {
       cartStore.add(product);
-      navigation.goBack();
+    }
+  }
+
+  function handleRemoveFromCard() {
+    if (product) {
+      cartStore.remove(product.id);
     }
   }
 
@@ -55,15 +71,32 @@ export default function Product() {
       </View>
 
       <View className="p-5 pb-8 gap-5">
-        <Button onPress={handleAddToCard}>
-          <Button.Icon>
-            <Feather name="plus-circle" size={20} />
-          </Button.Icon>
+        <View className="flex-row gap-2 items-center">
+          <Button className="flex-1" onPress={handleAddToCard}>
+            <Button.Icon>
+              <Feather name="plus-circle" size={20} />
+            </Button.Icon>
 
-          <Button.Text>Adicionar ao pedido</Button.Text>
-        </Button>
+            <Button.Text>Adicionar ao pedido</Button.Text>
+          </Button>
 
-        <LinkButton title="Voltar ao cardápio" href="/" />
+          {currentQuantity! > 0 && (
+            <View className="flex-row items-center">
+              <Text className="text-slate-900 font-subtitle text-lg py-2 px-4 bg-white rounded-md mr-2">
+                {currentQuantity || 0}
+              </Text>
+
+              <Feather
+                name="minus-circle"
+                size={25}
+                onPress={handleRemoveFromCard}
+                color={colors.red[400]}
+              />
+            </View>
+          )}
+        </View>
+
+        <LinkButton title={backTitle} href={backHref} />
       </View>
     </View>
   );
